@@ -19,6 +19,10 @@
     "next-sanity-image": "^3.2.1",
     "react-hot-toast": "^2.2.0",
     "react-icons": "^4.3.1",
-    "stripe": "^8.209.0"
+    "stripe": "^8.209.0",
+    "@babel/core": "^7.17.9"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.21.4"
   }
 }
