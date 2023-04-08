@@ -1,3 +1,4 @@
+// Ctrl + shift + R : For hard reload
 import React from "react";
 import { Product, FooterBanner, HeroBanner } from "../components";
 
@@ -13,7 +14,9 @@ const Home = ({ products, bannerData }) => {
       </div>
       <div className="products-container">
         {/* Adding ? to handle null check */}
-        {products?.map((product) => product.name)}
+        {products?.map((product) => (
+          <Product key={product._id} product={product} />
+        ))}
       </div>
       <FooterBanner />
     </>
