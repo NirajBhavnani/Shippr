@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import { useStateContext } from "@/context/StateContext";
 import { urlFor } from "@/lib/client";
 import Link from "next/link";
+import getStripe from "@/lib/getStripe";
 
 const Cart = () => {
   const cartRef = useRef();
@@ -21,6 +22,31 @@ const Cart = () => {
     toggleCartItemQuantity,
     onRemove,
   } = useStateContext();
+
+  const handleCheckout = async () => {
+    // Get instance of the stripe promise
+    const stripe = await getStripe();
+
+    // Making an API request to next.js backend, since it allows to create both FE and BE in 1 package
+    const response = await fetch("/api/stripe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartItems),
+    });
+
+    // if something went wrong, exit the function
+    if (response.statusCode === 500) return;
+
+    // if we have the data
+    const data = await response.json();
+
+    toast.loading("Redirecting you to the payment gateway...");
+
+    // Creating an instance of the checkout
+    stripe.redirectToCheckout({ sessionId: data.id });
+  };
 
   return (
     <div className="cart-wrapper" ref={cartRef}>
@@ -110,7 +136,7 @@ const Cart = () => {
               <h3>${totalPrice}</h3>
             </div>
             <div className="btn-container">
-              <button className="btn" type="button">
+              <button className="btn" type="button" onClick={handleCheckout}>
                 Pay with Stripe
               </button>
             </div>
