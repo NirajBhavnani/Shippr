@@ -30,6 +30,7 @@ const ProductDetails = ({ product, products }) => {
             {image?.map((item, i) => (
               <img
                 src={urlFor(item)}
+                key={i}
                 className={
                   i === index ? "small-image selected-image" : "small-image"
                 }
@@ -44,7 +45,9 @@ const ProductDetails = ({ product, products }) => {
           <div className="reviews">
             <div>
               {/* Calling same component 4 times */}
-              {Array(4).fill(<AiFillStar />)}
+              {Array.from(Array(4), (_, i) => (
+                <AiFillStar key={i} />
+              ))}
               <AiOutlineStar />
             </div>
             <p>(20)</p>
